@@ -119,6 +119,14 @@ class SubnetV4():
         '''the number of addresses that can be used for hosts in this subnetwork'''
         return self.totalAddr() - 2
 
+    def slashMask(self) -> int:
+        '''the number of bits used for the network part of the address'''
+        return self.mask
+
+    def addrMask(self) -> tuple:
+        '''the mask using IPv4 notation'''
+        return self.intToAddr(int('0b' + '1' * self.mask + '0' * (SubnetV4.MAX_BITS - self.mask), 2))
+
 assert SubnetV4() == SubnetV4()
 assert repr(SubnetV4(255,24)) == 'SubnetV4(255,24)'
 assert SubnetV4().strToAddr('255.255.255.255') == (255,255,255,255)
@@ -130,3 +138,5 @@ assert SubnetV4(int('0b'+'1'*24+'0'*8,2),24).totalAddr() == 2 ** (SubnetV4.MAX_B
 assert SubnetV4(int('0b'+'1'*24+'0'*8,2),24).useableAddr() == 2 ** (SubnetV4.MAX_BITS - 24) - 2
 assert SubnetV4(int('0b'+'1'*24+'0'*8,2),24).lastAddr() == int('0b'+'1'*32,2)
 assert SubnetV4(int('0b'+'1'*24+'0'*8,2),24).firstAddr() == int('0b'+'1'*24+'0'*8,2)
+assert SubnetV4().strToSubnetV4('123.244.0.1/16').slashMask() == 16
+assert SubnetV4().strToSubnetV4('123.244.0.1/16').addrMask() == (255,255,0,0)
