@@ -1,2 +1,2 @@
 # subnet-calculator
-my attempt at a subnet calculator in python3
+My attempt at a subnet calculator in Python3.
